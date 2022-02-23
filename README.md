@@ -1,6 +1,6 @@
 # Project-Chess
-Original Chess game made from scratch using only HTML/CSS and JQuery
-Game is under construction
+- Original Chess game made from scratch using only HTML/CSS and JQuery
+- Game is under construction
 
 
 # How to Run
