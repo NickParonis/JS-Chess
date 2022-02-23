@@ -1,6 +1,11 @@
 .container{
     max-width: 1180px;
 }
+
+.available{
+    background-color: brown !important
+}
+
 .chessgame{
     min-width: 770px;
     background: rgba(179,220,237,1);
@@ -150,6 +155,8 @@
     padding-left: 36px;
     padding-right: 36px;
 }
+
+
 
 /* .chessblock:nth-child(2n) {
     background: red;

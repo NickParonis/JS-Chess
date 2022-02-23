@@ -4,25 +4,87 @@ $(document).ready(function() {
         turnplayer:"white",
         whitetimer:300,
         blacktimer:300,
-        activePiecePosition: ["noneX", "noneY"],
-        activePieceType: "none"
+        activePiecePosition: ["X", 0],
+        activePieceType: "none",
+        activePieceColor: "none"
     };
 
+    function switchturnplayer(){
+        switch(gamestate.turnplayer) {
+            case "white":
+                gamestate.turnplayer = "black"
+                break;
+            case "black":
+                gamestate.turnplayer = "white"
+                break;
+        }
+    }
 
-    // click on a piece and make it active
+    // Clicking on square functionality
     $('.chessblock').on('click', function(){
 
+        // if User clicked on piece during its turn
         if ( ($(this).children().hasClass("wpiece") && gamestate.turnplayer == "white") || ($(this).children().hasClass("bpiece") && gamestate.turnplayer == "black") ){
             $('.chesspiece').removeClass('activepiece')
             $(this).children().addClass('activepiece')
-            gamestate.activePieceType = $(this).children('div')[0].className.split(' ')[3]
-            gamestate.activePiecePosition[0] = this.className.split(' ')[1].split('-')[0]
-            gamestate.activePiecePosition[1] = this.className.split(' ')[1].split('-')[1]
-            console.log("You picked a " + gamestate.activePieceType + " at position " + gamestate.activePiecePosition[0] + "-" + gamestate.activePiecePosition[1])
-            // if(gamestate.activePieceType == wpawn ){
-                
-            // }
 
+            // sets gamestate active piece type and position
+            gamestate.activePieceType = $(this).children('div')[0].className.split(' ')[3]
+            gamestate.activePieceColor = $(this).children('div')[0].className.split(' ')[2]
+            gamestate.activePiecePosition[0] = this.className.split(' ')[1].split('-')[0]
+            gamestate.activePiecePosition[1] = parseInt(this.className.split(' ')[1].split('-')[1]);
+            console.log("You picked a " + gamestate.activePieceType + " at position " + gamestate.activePiecePosition[0] + "-" + gamestate.activePiecePosition[1])
+            console.log("The color of the piece is " + gamestate.activePieceColor)
+
+
+            // case white pawn is picked
+            if(gamestate.activePieceType == "wpawn" ){
+                $('.chessblock').removeClass('available')
+                // case white pawn hasnt moved at all
+                if(gamestate.activePiecePosition[1] == 2 ){
+                    let Ypos = gamestate.activePiecePosition[1] + 1
+                    let Ypos2 = gamestate.activePiecePosition[1] + 2
+                    // show available squares for the pawn to move
+                    $('.' + gamestate.activePiecePosition[0] + '-' + Ypos).addClass("available")
+                    $('.' + gamestate.activePiecePosition[0] + '-' + Ypos2).addClass("available")
+                }
+                else {
+                    let Ypos = gamestate.activePiecePosition[1] + 1
+                    // show available squares for the pawn to move
+                    $('.' + gamestate.activePiecePosition[0] + '-' + Ypos).addClass("available")
+                }
+            }
+
+            // case black pawn is picked
+            if(gamestate.activePieceType == "bpawn" ){
+                $('.chessblock').removeClass('available')
+                // case pawn hasnt moved at all
+                if(gamestate.activePiecePosition[1] == 7 ){
+                    let Ypos = gamestate.activePiecePosition[1] - 1
+                    let Ypos2 = gamestate.activePiecePosition[1] - 2
+                    // show available squares for the pawn to move
+                    $('.' + gamestate.activePiecePosition[0] + '-' + Ypos).addClass("available")
+                    $('.' + gamestate.activePiecePosition[0] + '-' + Ypos2).addClass("available")
+                }
+                else {
+                    let Ypos = gamestate.activePiecePosition[1] - 1
+                    // show available squares for the pawn to move
+                    $('.' + gamestate.activePiecePosition[0] + '-' + Ypos).addClass("available")
+                }
+
+
+            }
+        }
+
+        // if User clicked on available square for piece to move
+        if ($(this).hasClass("available")){
+            console.log(gamestate.activePieceType)
+            $('.activepiece').removeClass().addClass('activepiece')
+            $('.chessblock').removeClass('available')
+            $(this).children().addClass("piece")
+            $(this).children().addClass(gamestate.activePieceColor)
+            $(this).children().addClass(gamestate.activePieceType)
+            switchturnplayer()
         }
     });
 
@@ -37,7 +99,7 @@ $(document).ready(function() {
     // start button
     $(document.body).on('click', '.start', function(){
         // button transform to resign
-        $('.start').html("Resign")
+        $('.start').html("Clear")
         $('.start').addClass("resign")
         $('.start').removeClass("start")
 
