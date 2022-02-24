@@ -87,9 +87,9 @@ $(document).ready(function() {
 
         // if User clicked on HIS piece during HIS turn
         if ( ($(this).children().hasClass("wpiece") && gamestate.turnplayer == "white") || ($(this).children().hasClass("bpiece") && gamestate.turnplayer == "black") ){
+            // clear other active piece and make ths clicked piece, active
             $('.chesspiece').removeClass('activepiece')
             $(this).children().addClass('activepiece')
-
             // update gamestate
             gamestate.activePieceType = $(this).children('div')[0].className.split(' ')[3]
             gamestate.activePieceColor = $(this).children('div')[0].className.split(' ')[2]
@@ -99,29 +99,27 @@ $(document).ready(function() {
             console.log("You picked a " + gamestate.activePieceType + " at position " + gamestate.activePiecePositionXY[0] + "-" + gamestate.activePiecePositionXY[1])
             console.log("The color of the piece is " + gamestate.activePieceColor)
             console.log("The letter " + gamestate.activePiecePositionXY[0] + " is equal to numer " + gamestate.activePiecePositionXnumerical)
-            
-            
             // case white pawn is picked
             if(gamestate.activePieceType == "wpawn" ){
-
                 // removes other available squares maybe from previous clicked pawns
                 $('.chessblock').removeClass('availableSquares')
-                
-                let availablePosNumToMove = gamestate.activePiecePositionXY[1] + 1
-                let availableSquareToMoveno1 = $('.' + gamestate.activePiecePositionXY[0] + '-' + availablePosNumToMove)
-                let availablePosNumToMove2 = gamestate.activePiecePositionXY[1] + 2
-                let availableSquareToMoveno2 = $('.' + gamestate.activePiecePositionXY[0] + '-' + availablePosNumToMove2)
-
+                // pawn can move 1 up
+                let availPosYNum = gamestate.activePiecePositionXY[1] + 1
+                let availPosYLetter = gamestate.activePiecePositionXY[0]
+                let availableSquareToMoveno1 = $('.' + availPosYLetter + '-' + availPosYNum)
+                // pawn can move 2 up
+                let availPosYNum2 = gamestate.activePiecePositionXY[1] + 2
+                let availPosYLetter2 = gamestate.activePiecePositionXY[0]
+                let availableSquareToMoveno2 = $('.' + availPosYLetter2 + '-' + availPosYNum2)
+                // pawn can move 1 diagonal right towards topside
                 // gets X pos square (g for example) and return the previous one (f for example)
-                let availablePosLetterToMove3 = translateNumpositiontoX(translateXpositiontoNum(gamestate.activePiecePositionXY[0]) - 1)
-                let availablePosNumToMove3 = gamestate.activePiecePositionXY[1] + 1
-                let availableSquareToMoveno3 = $('.' + availablePosLetterToMove3 + '-' + availablePosNumToMove3)
-                let availablePosLetterToMove4 = translateNumpositiontoX(translateXpositiontoNum(gamestate.activePiecePositionXY[0]) + 1)
-                let availablePosNumToMove4 = gamestate.activePiecePositionXY[1] + 1
-                let availableSquareToMoveno4 = $('.' + availablePosLetterToMove4 + '-' + availablePosNumToMove4)
-                
-                console.log("pawn can be moved to " + availableSquareToMoveno1)
-
+                let availPosXLetter3 = translateNumpositiontoX(translateXpositiontoNum(gamestate.activePiecePositionXY[0]) - 1)
+                let availPosYNum3 = gamestate.activePiecePositionXY[1] + 1
+                let availableSquareToMoveno3 = $('.' + availPosXLetter3 + '-' + availPosYNum3)
+                // pawn can move 1 diagonal left towards topside
+                let availPosXLetter4 = translateNumpositiontoX(translateXpositiontoNum(gamestate.activePiecePositionXY[0]) + 1)
+                let availPosYNum4 = gamestate.activePiecePositionXY[1] + 1
+                let availableSquareToMoveno4 = $('.' + availPosXLetter4 + '-' + availPosYNum4)
                 // if white pawn hasnt moved at all
                 if(gamestate.activePiecePositionXY[1] == 2 ){
                     console.log("but it can also move to " + availableSquareToMoveno2)
@@ -137,14 +135,17 @@ $(document).ready(function() {
                         availableSquareToMoveno1.addClass("availableSquares")
                     }
                 }
-                // else if pawn has moved so it can me moved up to 1 square up
+                // else if pawn has moved before, it can me moved only 1 square up
                 else {
-                    let availablePosNumToMove = gamestate.activePiecePositionXY[1] + 1
-                    let availableSquareToMoveno1 = $('.' + gamestate.activePiecePositionXY[0] + '-' + availablePosNumToMove)
+                    let availPosYNum = gamestate.activePiecePositionXY[1] + 1
+                    let availPosYLetter = gamestate.activePiecePositionXY[0]
+                    let availableSquareToMoveno1 = $('.' + availPosYLetter + '-' + availPosYNum)
+                    // if next square is free for the pawn to move
                     if (!availableSquareToMoveno1.children().hasClass("piece")){
                         availableSquareToMoveno1.addClass("availableSquares")
                     }
                 }
+                // if white pawn has enemy pieces in position he can "kill"
                 if (availableSquareToMoveno3.children().hasClass("bpiece")){
                     availableSquareToMoveno3.addClass("availableSquares")
                 }
@@ -152,51 +153,29 @@ $(document).ready(function() {
                 if (availableSquareToMoveno4.children().hasClass("bpiece")){
                     availableSquareToMoveno4.addClass("availableSquares")
                 }
-
-                // if pawn has enemy pieces it can capture
-                // to build
             }
-
-
-            // case black pawn is picked INCOMPLETE
-            // if(gamestate.activePieceType == "bpawn" ){
-            //     $('.chessblock').removeClass('availableSquares')
-            //     // case pawn hasnt moved at all
-            //     if(gamestate.activePiecePositionXY[1] == 7 ){
-            //         let availablePosNumToMove = gamestate.activePiecePositionXY[1] - 1
-            //         let availablePosNumToMove2 = gamestate.activePiecePositionXY[1] - 2
-            //         // show availableSquares squares for the pawn to move
-            //         $('.' + gamestate.activePiecePositionXY[0] + '-' + availablePosNumToMove).addClass("availableSquares")
-            //         $('.' + gamestate.activePiecePositionXY[0] + '-' + availablePosNumToMove2).addClass("availableSquares")
-            //     }
-            //     else {
-            //         let availablePosNumToMove = gamestate.activePiecePositionXY[1] - 1
-            //         // show availableSquares squares for the pawn to move
-            //         $('.' + gamestate.activePiecePositionXY[0] + '-' + availablePosNumToMove).addClass("availableSquares")
-            //     }
-            // }
-
-            // BLACK PAWN
+            // case black pawn is picked
             if(gamestate.activePieceType == "bpawn" ){
-
                 // removes other available squares maybe from previous clicked pawns
                 $('.chessblock').removeClass('availableSquares')
-                
-                let availablePosNumToMove = gamestate.activePiecePositionXY[1] - 1
-                let availableSquareToMoveno1 = $('.' + gamestate.activePiecePositionXY[0] + '-' + availablePosNumToMove)
-                let availablePosNumToMove2 = gamestate.activePiecePositionXY[1] - 2
-                let availableSquareToMoveno2 = $('.' + gamestate.activePiecePositionXY[0] + '-' + availablePosNumToMove2)
-
+                // pawn can move 1 down
+                let availPosYNum = gamestate.activePiecePositionXY[1] - 1
+                let availPosYLetter = gamestate.activePiecePositionXY[0]
+                let availableSquareToMoveno1 = $('.' + availPosYLetter + '-' + availPosYNum)
+                // pawn can move 2 down
+                let availPosYNum2 = gamestate.activePiecePositionXY[1] - 2
+                let availPosYLetter2 = gamestate.activePiecePositionXY[0]
+                let availableSquareToMoveno2 = $('.' + availPosYLetter2 + '-' + availPosYNum2)
+                // pawn can move 1 diagonal right towards bottomside
                 // gets X pos square (g for example) and return the previous one (f for example)
-                let availablePosLetterToMove3 = translateNumpositiontoX(translateXpositiontoNum(gamestate.activePiecePositionXY[0]) - 1)
-                let availablePosNumToMove3 = gamestate.activePiecePositionXY[1] - 1
-                let availableSquareToMoveno3 = $('.' + availablePosLetterToMove3 + '-' + availablePosNumToMove3)
-                let availablePosLetterToMove4 = translateNumpositiontoX(translateXpositiontoNum(gamestate.activePiecePositionXY[0]) + 1)
-                let availablePosNumToMove4 = gamestate.activePiecePositionXY[1] - 1
-                let availableSquareToMoveno4 = $('.' + availablePosLetterToMove4 + '-' + availablePosNumToMove4)
-                
+                let availPosXLetter3 = translateNumpositiontoX(translateXpositiontoNum(gamestate.activePiecePositionXY[0]) - 1)
+                let availPosYNum3 = gamestate.activePiecePositionXY[1] - 1
+                let availableSquareToMoveno3 = $('.' + availPosXLetter3 + '-' + availPosYNum3)
+                // // pawn can move 1 diagonal left towards bottomside
+                let availPosXLetter4 = translateNumpositiontoX(translateXpositiontoNum(gamestate.activePiecePositionXY[0]) + 1)
+                let availPosYNum4 = gamestate.activePiecePositionXY[1] - 1
+                let availableSquareToMoveno4 = $('.' + availPosXLetter4 + '-' + availPosYNum4)
                 console.log("pawn can be moved to " + availableSquareToMoveno1)
-
                 // if black pawn hasnt moved at all
                 if(gamestate.activePiecePositionXY[1] == 7 ){
                     console.log("but it can also move to " + availableSquareToMoveno2)
@@ -214,12 +193,14 @@ $(document).ready(function() {
                 }
                 // else if pawn has moved so it can me moved up to 1 square up
                 else {
-                    let availablePosNumToMove = gamestate.activePiecePositionXY[1] - 1
-                    let availableSquareToMoveno1 = $('.' + gamestate.activePiecePositionXY[0] + '-' + availablePosNumToMove)
+                    let availPosYNum = gamestate.activePiecePositionXY[1] - 1
+                    let availableSquareToMoveno1 = $('.' + gamestate.activePiecePositionXY[0] + '-' + availPosYNum)
+                    // if next square is free for the pawn to move
                     if (!availableSquareToMoveno1.children().hasClass("piece")){
                         availableSquareToMoveno1.addClass("availableSquares")
                     }
                 }
+                // if white pawn has enemy pieces in position he can "kill"
                 if (availableSquareToMoveno3.children().hasClass("wpiece")){
                     availableSquareToMoveno3.addClass("availableSquares")
                 }
@@ -227,13 +208,9 @@ $(document).ready(function() {
                 if (availableSquareToMoveno4.children().hasClass("wpiece")){
                     availableSquareToMoveno4.addClass("availableSquares")
                 }
-
-                // if pawn has enemy pieces it can capture
-                // to build
             }
         }
-
-        // if User clicked on availableSquares for piece to move
+        // if User clicked on availableSquares for piece to move a.k.a moved a piece
         if ($(this).hasClass("availableSquares")){
             console.log(gamestate.activePieceType)
             $('.activepiece').removeClass().addClass('chesspiece')
