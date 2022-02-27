@@ -84,7 +84,6 @@ $(document).ready(function() {
 
     // Clicking on square functionality
     $('.chessblock').on('click', function(){
-
         // if User clicked on HIS piece during HIS turn
         if ( ($(this).children().hasClass("wpiece") && gamestate.turnplayer == "white") || ($(this).children().hasClass("bpiece") && gamestate.turnplayer == "black") ){
             // clear other active piece and make ths clicked piece, active
@@ -103,14 +102,15 @@ $(document).ready(function() {
             if(gamestate.activePieceType == "wpawn" ){
                 // removes other available squares maybe from previous clicked pawns
                 $('.chessblock').removeClass('availableSquares')
+                // pawn can be moved up to 4 different squares
                 // pawn can move 1 up
                 let availPosYNum = gamestate.activePiecePositionXY[1] + 1
-                let availPosYLetter = gamestate.activePiecePositionXY[0]
-                let availableSquareToMoveno1 = $('.' + availPosYLetter + '-' + availPosYNum)
+                let availPosXLetter = gamestate.activePiecePositionXY[0]
+                let availableSquareToMoveno1 = $('.' + availPosXLetter + '-' + availPosYNum)
                 // pawn can move 2 up
                 let availPosYNum2 = gamestate.activePiecePositionXY[1] + 2
-                let availPosYLetter2 = gamestate.activePiecePositionXY[0]
-                let availableSquareToMoveno2 = $('.' + availPosYLetter2 + '-' + availPosYNum2)
+                let availPosXLetter2 = gamestate.activePiecePositionXY[0]
+                let availableSquareToMoveno2 = $('.' + availPosXLetter2 + '-' + availPosYNum2)
                 // pawn can move 1 diagonal right towards topside
                 // gets X pos square (g for example) and return the previous one (f for example)
                 let availPosXLetter3 = translateNumpositiontoX(translateXpositiontoNum(gamestate.activePiecePositionXY[0]) - 1)
@@ -138,8 +138,8 @@ $(document).ready(function() {
                 // else if pawn has moved before, it can me moved only 1 square up
                 else {
                     let availPosYNum = gamestate.activePiecePositionXY[1] + 1
-                    let availPosYLetter = gamestate.activePiecePositionXY[0]
-                    let availableSquareToMoveno1 = $('.' + availPosYLetter + '-' + availPosYNum)
+                    let availPosXLetter = gamestate.activePiecePositionXY[0]
+                    let availableSquareToMoveno1 = $('.' + availPosXLetter + '-' + availPosYNum)
                     // if next square is free for the pawn to move
                     if (!availableSquareToMoveno1.children().hasClass("piece")){
                         availableSquareToMoveno1.addClass("availableSquares")
@@ -160,12 +160,12 @@ $(document).ready(function() {
                 $('.chessblock').removeClass('availableSquares')
                 // pawn can move 1 down
                 let availPosYNum = gamestate.activePiecePositionXY[1] - 1
-                let availPosYLetter = gamestate.activePiecePositionXY[0]
-                let availableSquareToMoveno1 = $('.' + availPosYLetter + '-' + availPosYNum)
+                let availPosXLetter = gamestate.activePiecePositionXY[0]
+                let availableSquareToMoveno1 = $('.' + availPosXLetter + '-' + availPosYNum)
                 // pawn can move 2 down
                 let availPosYNum2 = gamestate.activePiecePositionXY[1] - 2
-                let availPosYLetter2 = gamestate.activePiecePositionXY[0]
-                let availableSquareToMoveno2 = $('.' + availPosYLetter2 + '-' + availPosYNum2)
+                let availPosXLetter2 = gamestate.activePiecePositionXY[0]
+                let availableSquareToMoveno2 = $('.' + availPosXLetter2 + '-' + availPosYNum2)
                 // pawn can move 1 diagonal right towards bottomside
                 // gets X pos square (g for example) and return the previous one (f for example)
                 let availPosXLetter3 = translateNumpositiontoX(translateXpositiontoNum(gamestate.activePiecePositionXY[0]) - 1)
@@ -209,8 +209,97 @@ $(document).ready(function() {
                     availableSquareToMoveno4.addClass("availableSquares")
                 }
             }
+            // case black or white knight is picked
+            if(gamestate.activePieceType == "wknight" || gamestate.activePieceType == "bknight"){
+                // removes other available squares from previous clicked pieces
+                $('.chessblock').removeClass('availableSquares')
+                // knight can be moved up to 8 different squares that will be stored in following array
+                let availNightPositions = []
+                // knight can move to X+1 Y+2
+                if ( gamestate.activePiecePositionXnumerical < 8 && gamestate.activePiecePositionXY[1] < 7){
+                    let availPosXLetter = translateNumpositiontoX(gamestate.activePiecePositionXnumerical + 1);
+                    let availPosYNum = gamestate.activePiecePositionXY[1] + 2;
+                    let availableSquareToMove = $('.' + availPosXLetter + '-' + availPosYNum);
+                    availNightPositions.push(availableSquareToMove);
+                    console.log("Knight can be moved to 1" + availableSquareToMove);
+                }
+                // knight can move to X+1 Y-2
+                if ( gamestate.activePiecePositionXnumerical < 8 && gamestate.activePiecePositionXY[1] > 2){
+                    let availPosXLetter = translateNumpositiontoX(gamestate.activePiecePositionXnumerical + 1)
+                    let availPosYNum = gamestate.activePiecePositionXY[1] - 2
+                    let availableSquareToMove = $('.' + availPosXLetter + '-' + availPosYNum)
+                    availNightPositions.push(availableSquareToMove);
+                    console.log("Knight can be moved to 2" + availableSquareToMove)
+                }
+                // knight can move to X-1 Y+2
+                if ( gamestate.activePiecePositionXnumerical > 1 && gamestate.activePiecePositionXY[1] < 7){
+                    let availPosXLetter = translateNumpositiontoX(gamestate.activePiecePositionXnumerical - 1)
+                    let availPosYNum = gamestate.activePiecePositionXY[1] + 2
+                    let availableSquareToMove = $('.' + availPosXLetter + '-' + availPosYNum)
+                    availNightPositions.push(availableSquareToMove);
+                    console.log("Knight can be moved to 3" + availableSquareToMove)
+                }
+                // knight can move to X-1 Y-2
+                if ( gamestate.activePiecePositionXnumerical > 1 && gamestate.activePiecePositionXY[1] > 2){
+                    let availPosXLetter = translateNumpositiontoX(gamestate.activePiecePositionXnumerical - 1)
+                    let availPosYNum = gamestate.activePiecePositionXY[1] - 2
+                    let availableSquareToMove = $('.' + availPosXLetter + '-' + availPosYNum)
+                    availNightPositions.push(availableSquareToMove);
+                    console.log("Knight can be moved to 4" + availableSquareToMove)
+                }
+                // knight can move to X+2 Y+1
+                if ( gamestate.activePiecePositionXnumerical < 7 && gamestate.activePiecePositionXY[1] < 8){
+                    let availPosXLetter = translateNumpositiontoX(gamestate.activePiecePositionXnumerical + 2);
+                    let availPosYNum = gamestate.activePiecePositionXY[1] + 1;
+                    let availableSquareToMove = $('.' + availPosXLetter + '-' + availPosYNum);
+                    availNightPositions.push(availableSquareToMove);
+                    console.log("Knight can be moved to 5" + availableSquareToMove)
+                }
+                // knight can move to X+2 Y-1
+                if ( gamestate.activePiecePositionXnumerical < 7 && gamestate.activePiecePositionXY[1] > 1){
+                    let availPosXLetter = translateNumpositiontoX(gamestate.activePiecePositionXnumerical + 2);
+                    let availPosYNum = gamestate.activePiecePositionXY[1] - 1;
+                    let availableSquareToMove = $('.' + availPosXLetter + '-' + availPosYNum);
+                    availNightPositions.push(availableSquareToMove);
+                    console.log("Knight can be moved to 6" + availableSquareToMove)
+                }
+                // knight can move to X-2 Y+1
+                if ( gamestate.activePiecePositionXnumerical > 2 && gamestate.activePiecePositionXY[1] < 8){
+                    let availPosXLetter = translateNumpositiontoX(gamestate.activePiecePositionXnumerical - 2);
+                    let availPosYNum = gamestate.activePiecePositionXY[1] + 1;
+                    let availableSquareToMove = $('.' + availPosXLetter + '-' + availPosYNum);
+                    availNightPositions.push(availableSquareToMove);
+                    console.log("Knight can be moved to 7" + availableSquareToMove)
+                }
+                // knight can move to X-2 Y-1
+                if( gamestate.activePiecePositionXnumerical > 2 && gamestate.activePiecePositionXY[1] > 1){
+                    let availPosXLetter = translateNumpositiontoX(gamestate.activePiecePositionXnumerical - 2);
+                    let availPosYNum = gamestate.activePiecePositionXY[1] - 1;
+                    let availableSquareToMove = $('.' + availPosXLetter + '-' + availPosYNum);
+                    availNightPositions.push(availableSquareToMove);
+                    console.log("Knight can be moved to 8" + availableSquareToMove)
+                }
+                 // create available squares the knight can move
+                 if(gamestate.activePieceType == "wknight"){
+                    availNightPositions.forEach(createAvailableSquaresForwhite);
+                }
+                if(gamestate.activePieceType == "bknight"){
+                    availNightPositions.forEach(createAvailableSquaresForblack);
+                }
+                function createAvailableSquaresForwhite(element){
+                    if (!element.children().hasClass("wpiece")){
+                        element.addClass("availableSquares")
+                    }
+                }
+                function createAvailableSquaresForblack(element){
+                    if (!element.children().hasClass("bpiece")){
+                        element.addClass("availableSquares")
+                    }
+                }
+            }
+                
         }
-        // if User clicked on availableSquares for piece to move a.k.a moved a piece
+        // if user clicked on availableSquares for piece to move a.k.a user moved a piece
         if ($(this).hasClass("availableSquares")){
             console.log(gamestate.activePieceType)
             $('.activepiece').removeClass().addClass('chesspiece')
