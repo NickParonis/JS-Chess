@@ -628,18 +628,17 @@ $(document).ready(function() {
         addblackpieces();
         addwhitepieces();
         // start countdown
-        let minute = 4;
-        let sec = 59;
-        setInterval(function() {
-            document.getElementById("wtimer").innerHTML = minute + " : " + sec;
-            sec--;
-            if (sec == 00) {
-                minute --;
-                sec = 59;
-                if (minute == 0) {
-                    minute = 5;
-                }
-            }
-        }, 1000);
+    });
+
+    // color changer
+    $(document.body).on('click', '.void', function(){
+        $('.chessgame').removeClass("MediterraneanIsland")
+        $('.chessgame').addClass("intotheVoid")
+        // start countdown
+    });
+    $(document.body).on('click', '.mediterranean', function(){
+        $('.chessgame').removeClass("intotheVoid")
+        $('.chessgame').addClass("MediterraneanIsland")
+        // start countdown
     });
 });
