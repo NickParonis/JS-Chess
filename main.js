@@ -9,7 +9,6 @@ $(document).ready(function() {
         activePieceType: "none",
         activePieceColor: "none"
     };
-
     function switchturnplayer(){
         switch(gamestate.turnplayer) {
             case "white":
@@ -20,7 +19,6 @@ $(document).ready(function() {
                 break;
         }
     }
-
     function translateXpositiontoNum(Xpos){
         switch(Xpos) {
             case "a":
@@ -41,7 +39,6 @@ $(document).ready(function() {
                 return 8
         }
     }
-
     function translateNumpositiontoX(Num){
         switch(Num) {
             case 1:
@@ -62,7 +59,6 @@ $(document).ready(function() {
                 return "h"
         }
     }
-
     function addwhitepieces(){
         $('.a-1,.h-1').children().addClass("piece wpiece wrook")
         $('.b-1,.g-1').children().addClass("piece wpiece wknight")
@@ -71,7 +67,6 @@ $(document).ready(function() {
         $('.e-1').children().addClass("piece wpiece wking")
         $('.a-2,.b-2,.c-2,.d-2,.e-2,.f-2,.g-2,.h-2').children().addClass("piece wpiece wpawn")
     }
-
     function addblackpieces(){
         $('.a-8,.h-8').children().addClass("piece bpiece brook")
         $('.b-8,.g-8').children().addClass("piece bpiece bknight")
@@ -80,10 +75,19 @@ $(document).ready(function() {
         $('.e-8').children().addClass("piece bpiece bking")
         $('.a-7,.b-7,.c-7,.d-7,.e-7,.f-7,.g-7,.h-7').children().addClass("piece bpiece bpawn")
     }
-
-
+    function createAvailableSquaresForwhite(element){
+        if (!element.children().hasClass("wpiece")){
+            element.addClass("availableSquares")
+        }
+    }
+    function createAvailableSquaresForblack(element){
+        if (!element.children().hasClass("bpiece")){
+            element.addClass("availableSquares")
+        }
+    }
     // Clicking on square functionality
     $('.chessblock').on('click', function(){
+        
         // if User clicked on HIS piece during HIS turn
         if ( ($(this).children().hasClass("wpiece") && gamestate.turnplayer == "white") || ($(this).children().hasClass("bpiece") && gamestate.turnplayer == "black") ){
             // clear other active piece and make ths clicked piece, active
@@ -286,19 +290,144 @@ $(document).ready(function() {
                 if(gamestate.activePieceType == "bknight"){
                     availNightPositions.forEach(createAvailableSquaresForblack);
                 }
-                function createAvailableSquaresForwhite(element){
-                    if (!element.children().hasClass("wpiece")){
-                        element.addClass("availableSquares")
+            }
+            // case white rook is picked
+            if(gamestate.activePieceType == "wrook"){
+                // removes other available squares from previous clicked pieces
+                $('.chessblock').removeClass('availableSquares')
+                // rook can be moved in straight lines that will be stored in following array
+                let availRookPositions = []
+                // moving up rook positions
+                for (let i = 0; i < 8 - gamestate.activePiecePositionXY[1]; i++) {
+                    let availPosXLetter = translateNumpositiontoX(gamestate.activePiecePositionXnumerical);
+                    let availPosYNum = gamestate.activePiecePositionXY[1] + 1 + i;
+                    let availableSquareToMove = $('.' + availPosXLetter + '-' + availPosYNum);
+                    availRookPositions.push(availableSquareToMove);
+                    if(availableSquareToMove.children().hasClass("wpiece")){
+                        i = 8
+                    }
+                    if(availableSquareToMove.children().hasClass("bpiece")){
+                        availRookPositions.push(availableSquareToMove);
+                        i = 8
                     }
                 }
-                function createAvailableSquaresForblack(element){
-                    if (!element.children().hasClass("bpiece")){
-                        element.addClass("availableSquares")
+                // moving down rook positions
+                for (let i = 0; i < 0 + gamestate.activePiecePositionXY[1]; i++) {
+                    let availPosXLetter = translateNumpositiontoX(gamestate.activePiecePositionXnumerical);
+                    let availPosYNum = gamestate.activePiecePositionXY[1] - 1 - i;
+                    let availableSquareToMove = $('.' + availPosXLetter + '-' + availPosYNum);
+                    availRookPositions.push(availableSquareToMove);
+                    if(availableSquareToMove.children().hasClass("wpiece")){
+                        i = 8
                     }
+                    if(availableSquareToMove.children().hasClass("bpiece")){
+                        availRookPositions.push(availableSquareToMove);
+                        i = 8
+                    }
+                }
+                // moving left rook positions
+                for (let i = 0; i < 0 + gamestate.activePiecePositionXnumerical; i++) {
+                    let availPosXLetter = translateNumpositiontoX(gamestate.activePiecePositionXnumerical - 1 - i);
+                    let availPosYNum = gamestate.activePiecePositionXY[1];
+                    let availableSquareToMove = $('.' + availPosXLetter + '-' + availPosYNum);
+                    availRookPositions.push(availableSquareToMove);
+                    if(availableSquareToMove.children().hasClass("wpiece")){
+                        i = 8
+                    }
+                    if(availableSquareToMove.children().hasClass("bpiece")){
+                        availRookPositions.push(availableSquareToMove);
+                        i = 8
+                    }
+                }
+                // moving right rook positions
+                for (let i = 0; i < 8 - gamestate.activePiecePositionXnumerical; i++) {
+                    let availPosXLetter = translateNumpositiontoX(gamestate.activePiecePositionXnumerical + 1 + i) ;
+                    let availPosYNum = gamestate.activePiecePositionXY[1];
+                    let availableSquareToMove = $('.' + availPosXLetter + '-' + availPosYNum);
+                    availRookPositions.push(availableSquareToMove);
+                    if(availableSquareToMove.children().hasClass("wpiece")){
+                        i = 8
+                    }
+                    if(availableSquareToMove.children().hasClass("bpiece")){
+                        availRookPositions.push(availableSquareToMove);
+                        i = 8
+                    }
+                }
+                // create available squares the rook can move
+                if(gamestate.activePieceType == "wrook"){
+                    availRookPositions.forEach(createAvailableSquaresForwhite);
                 }
             }
-                
+            // case black rook is picked
+            if(gamestate.activePieceType == "brook"){
+                // removes other available squares from previous clicked pieces
+                $('.chessblock').removeClass('availableSquares')
+                // rook can be moved in straight lines that will be stored in following array
+                let availRookPositions = []
+                // moving up rook positions
+                for (let i = 0; i < 8 - gamestate.activePiecePositionXY[1]; i++) {
+                    let availPosXLetter = translateNumpositiontoX(gamestate.activePiecePositionXnumerical);
+                    let availPosYNum = gamestate.activePiecePositionXY[1] + 1 + i;
+                    let availableSquareToMove = $('.' + availPosXLetter + '-' + availPosYNum);
+                    availRookPositions.push(availableSquareToMove);
+                    if(availableSquareToMove.children().hasClass("bpiece")){
+                        i = 8
+                    }
+                    if(availableSquareToMove.children().hasClass("wpiece")){
+                        availRookPositions.push(availableSquareToMove);
+                        i = 8
+                    }
+                }
+                // moving down rook positions
+                for (let i = 0; i < 0 + gamestate.activePiecePositionXY[1]; i++) {
+                    let availPosXLetter = translateNumpositiontoX(gamestate.activePiecePositionXnumerical);
+                    let availPosYNum = gamestate.activePiecePositionXY[1] - 1 - i;
+                    let availableSquareToMove = $('.' + availPosXLetter + '-' + availPosYNum);
+                    availRookPositions.push(availableSquareToMove);
+                    if(availableSquareToMove.children().hasClass("bpiece")){
+                        i = 8
+                    }
+                    if(availableSquareToMove.children().hasClass("wpiece")){
+                        availRookPositions.push(availableSquareToMove);
+                        i = 8
+                    }
+                }
+                // moving left rook positions
+                for (let i = 0; i < 0 + gamestate.activePiecePositionXnumerical; i++) {
+                    let availPosXLetter = translateNumpositiontoX(gamestate.activePiecePositionXnumerical - 1 - i);
+                    let availPosYNum = gamestate.activePiecePositionXY[1];
+                    let availableSquareToMove = $('.' + availPosXLetter + '-' + availPosYNum);
+                    availRookPositions.push(availableSquareToMove);
+                    if(availableSquareToMove.children().hasClass("bpiece")){
+                        i = 8
+                    }
+                    if(availableSquareToMove.children().hasClass("wpiece")){
+                        availRookPositions.push(availableSquareToMove);
+                        i = 8
+                    }
+                }
+                // moving right rook positions
+                for (let i = 0; i < 8 - gamestate.activePiecePositionXnumerical; i++) {
+                    let availPosXLetter = translateNumpositiontoX(gamestate.activePiecePositionXnumerical + 1 + i) ;
+                    let availPosYNum = gamestate.activePiecePositionXY[1];
+                    let availableSquareToMove = $('.' + availPosXLetter + '-' + availPosYNum);
+                    availRookPositions.push(availableSquareToMove);
+                    if(availableSquareToMove.children().hasClass("bpiece")){
+                        i = 8
+                    }
+                    if(availableSquareToMove.children().hasClass("wpiece")){
+                        availRookPositions.push(availableSquareToMove);
+                        i = 8
+                    }
+                }
+                // create available squares the rook can move
+                if(gamestate.activePieceType == "brook"){
+                    availRookPositions.forEach(createAvailableSquaresForblack);
+                }
+            }
+
         }
+        
         // if user clicked on availableSquares for piece to move a.k.a user moved a piece
         if ($(this).hasClass("availableSquares")){
             console.log(gamestate.activePieceType)
