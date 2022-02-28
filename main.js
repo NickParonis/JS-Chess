@@ -2,23 +2,77 @@ $(document).ready(function() {
     let availRookPositions = []
     let availBishopPositions = []
     let availNightPositions = []
+    let startWhiteTimer 
+    let startBlackTimer 
     let gamestate = {
         turnplayer:"white",
-        whitetimer:300,
-        blacktimer:300,
+        whitetimer:{
+            remainingTime: 900,
+            addSeconds(seconds){
+                gamestate.whitetimer.remainingTime = gamestate.whitetimer.remainingTime + seconds
+            }
+        },
+        blacktimer:{
+            remainingTime: 900,
+            addSeconds(seconds){
+                gamestate.blacktimer.remainingTime = gamestate.whitetimer.remainingTime + seconds
+            }
+        },
         activePiecePositionXY: ["X", 0],
         activePiecePositionXnumerical: 0,
         activePieceType: "none",
         activePieceColor: "none"
     };
+    // start button
+    $(document.body).on('click', '.start', function(){
+        //transformation from startButton to resetButton
+        $('.start').html("Clear");
+        $('.start').addClass("reset");
+        $('.start').removeClass("start");
+        addblackpieces();
+        addwhitepieces();
+        startWhiteTimer = setInterval(function(){
+            gamestate.whitetimer.remainingTime = gamestate.whitetimer.remainingTime - 1
+            $(".whitesTime").empty()
+            $(".whitesTime").append(gamestate.whitetimer.remainingTime);
+        }, 1000);
+    });
+
+    $('#exampleModal').modal({
+        backdrop: 'static',
+        keyboard: false
+    })
+
+    $(document.body).on('input', '.whitesTimeRange', function(){
+        gamestate.whitetimer.remainingTime = $(".whitesTimeRange").val()
+        $(".whitesTime").empty();
+        $(".whitesTime").append(gamestate.whitetimer.remainingTime);
+    });
+    $(document.body).on('input', '.blacksTimeRange', function(){
+        gamestate.blacktimer.remainingTime = $(".blacksTimeRange").val()
+        $(".blacksTime").empty()
+        $(".blacksTime").append(gamestate.blacktimer.remainingTime);
+    });
     function switchturnplayer(){
         switch(gamestate.turnplayer) {
             case "white":
-                gamestate.turnplayer = "black"
-                break;
+                clearInterval(startWhiteTimer);
+                gamestate.turnplayer = "black";
+                startBlackTimer = setInterval(function(){
+                    gamestate.blacktimer.remainingTime = gamestate.blacktimer.remainingTime - 1
+                    $(".blacksTime").empty()
+                    $(".blacksTime").append(gamestate.blacktimer.remainingTime);
+                }, 1000);
+            break;
             case "black":
-                gamestate.turnplayer = "white"
-                break;
+                clearInterval(startBlackTimer);
+                gamestate.turnplayer = "white";
+                startWhiteTimer = setInterval(function(){
+                    gamestate.whitetimer.remainingTime = gamestate.whitetimer.remainingTime - 1
+                    $(".whitesTime").empty()
+                    $(".whitesTime").append(gamestate.whitetimer.remainingTime);
+                }, 1000);
+            break;
         }
     }
     function translateXpositiontoNum(Xpos){
@@ -600,12 +654,12 @@ $(document).ready(function() {
 
         // if user clicked on availableSquares for piece to move a.k.a user moved a piece
         if ($(this).hasClass("availableSquares")){
-            $('.activepiece').removeClass().addClass('chesspiece')
-            $('.chessblock').removeClass('availableSquares')
-            $(this).children().removeClass().addClass("piece chesspiece")
-            $(this).children().addClass(gamestate.activePieceColor)
-            $(this).children().addClass(gamestate.activePieceType)
-            switchturnplayer()
+            $('.activepiece').removeClass().addClass('chesspiece');
+            $('.chessblock').removeClass('availableSquares');
+            $(this).children().removeClass().addClass("piece chesspiece");
+            $(this).children().addClass(gamestate.activePieceColor);
+            $(this).children().addClass(gamestate.activePieceType);
+            switchturnplayer();
         }
     });
 
@@ -617,18 +671,17 @@ $(document).ready(function() {
         $('.reset').removeClass("reset");
         $('.chessblock').removeClass("availableSquares");
         gamestate.turnplayer = "white"
+        clearInterval(startWhiteTimer);
+        clearInterval(startBlackTimer);
+        gamestate.whitetimer.remainingTime = 900
+        $(".whitesTime").empty()
+        $(".whitesTime").append(gamestate.whitetimer.remainingTime);
+        gamestate.blacktimer.remainingTime = 900
+        $(".blacksTime").empty()
+        $(".blacksTime").append(gamestate.blacktimer.remainingTime);
     });
 
-    // start button
-    $(document.body).on('click', '.start', function(){
-        //transformation from startButton to resetButton
-        $('.start').html("Clear")
-        $('.start').addClass("reset")
-        $('.start').removeClass("start")
-        addblackpieces();
-        addwhitepieces();
-        // start countdown
-    });
+
 
     // color changer
     $(document.body).on('click', '.void', function(){

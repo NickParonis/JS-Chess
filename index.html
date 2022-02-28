@@ -16,12 +16,14 @@
                 <button class="button-30 start">Start Game</button>
                 <button class="button-30" data-bs-toggle="modal" data-bs-target="#exampleModal" role="button">Settings</button>
             </div>
-            <!-- <div id="btimer" class="timer">
-                5 : 00
+            <div class="timergroup">
+                <div class="blacksTime">
+                    900
+                </div>
+                <div class="whitesTime">
+                    900
+                </div>
             </div>
-            <div id="wtimer" class="timer">
-                5 : 00
-            </div> -->
             <div class="chessboard">
                 <div class="chessrow chessrow-8">
                     <div class="chessblock a-8"><div class="chesspiece"></div></div>
@@ -104,7 +106,6 @@
                     <div class="chessblock h-1"><div class="chesspiece"></div></div>
                 </div>
             </div>
-
         </div>
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -136,11 +137,17 @@
                     <hr>
                     <div class="whiteSettings" style="display: inline-block; text-align: center;">
                         <label for="customRange3" class="form-label">White's Time</label>
-                        <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange3">
+                        <input type="range" class="form-range whitesTimeRange" min="60" max="1800" step="30" id="customRange1">
+                        <div class="whitesTime">
+                            900
+                        </div>
                     </div>
-                    <div class="whiteSettings" style="display: inline-block; text-align: center;">
-                        <label for="customRange3" class="form-label">Blacks's Time</label>
-                        <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange3">
+                    <div class="blackSettings" style="display: inline-block; text-align: center;">
+                        <label for="customRange3" class="form-label">Black's Time</label>
+                        <input type="range" class="form-range blacksTimeRange" min="60" max="1800" step="30" id="customRange2">
+                        <div class="blacksTime">
+                            900
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

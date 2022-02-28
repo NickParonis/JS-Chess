@@ -6,6 +6,15 @@ body{
     padding: 0;
 }
 
+.timergroup{
+    float: right;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    position: relative;
+    width: 140px;
+}
+
 .availableSquares{
     background-color: #ff5280 !important;
     opacity: 30%;
