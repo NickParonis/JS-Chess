@@ -7,3 +7,6 @@
 - Day 2: Created functionality for White and Black Pawns, clickable squares etc. (missing en passant and promote to another piece on last rank)
 - Day 3: Added rook functionality
 - Day 4: Added bishop and queen functionality
+
+# How to Run
+- Save the files in the same directory and run index.html or check it online here https://coherent-square.surge.sh/
