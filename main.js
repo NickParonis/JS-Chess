@@ -685,13 +685,13 @@ $(document).ready(function() {
 
     // color changer
     $(document.body).on('click', '.void', function(){
-        $('.chessgame').removeClass("MediterraneanIsland")
-        $('.chessgame').addClass("intotheVoid")
+        $('.pagecontainer').removeClass("MediterraneanIsland")
+        $('.pagecontainer').addClass("intotheVoid")
         // start countdown
     });
     $(document.body).on('click', '.mediterranean', function(){
-        $('.chessgame').removeClass("intotheVoid")
-        $('.chessgame').addClass("MediterraneanIsland")
+        $('.pagecontainer').removeClass("intotheVoid")
+        $('.pagecontainer').addClass("MediterraneanIsland")
         // start countdown
     });
 });

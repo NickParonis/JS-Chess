@@ -24,6 +24,9 @@ body{
     min-width: 770px;
     height: 100vh;
     overflow: auto;
+    max-width: 1080px;
+    position: relative;
+    margin: auto;
 }
 .MediterraneanIsland{
     background: rgba(179,220,237,1);
@@ -64,29 +67,29 @@ body{
     height: 60px;
     display: flex;
 }
-.MediterraneanIsland > .chessboard > .chessrow:nth-child(2n) > div:nth-child(2n-1){
+.MediterraneanIsland > .chessgame .chessboard > .chessrow:nth-child(2n) > div:nth-child(2n-1){
     background-color: darkgrey;
 }
-.MediterraneanIsland > .chessboard > .chessrow:nth-child(2n-1) > div:nth-child(2n){
+.MediterraneanIsland > .chessgame > .chessboard > .chessrow:nth-child(2n-1) > div:nth-child(2n){
     background-color: darkgrey;
 }
-.MediterraneanIsland > .chessboard > .chessrow:nth-child(2n) > div:nth-child(2n){
+.MediterraneanIsland > .chessgame > .chessboard > .chessrow:nth-child(2n) > div:nth-child(2n){
     background-color: white;
 }
-.MediterraneanIsland > .chessboard > .chessrow:nth-child(2n-1) > div:nth-child(2n-1){
+.MediterraneanIsland > .chessgame > .chessboard > .chessrow:nth-child(2n-1) > div:nth-child(2n-1){
     background-color: white;
 }
 
-.intotheVoid > .chessboard > .chessrow:nth-child(2n) > div:nth-child(2n-1){
+.intotheVoid > .chessgame > .chessboard > .chessrow:nth-child(2n) > div:nth-child(2n-1){
     background-color: #300269;
 }
-.intotheVoid > .chessboard > .chessrow:nth-child(2n-1) > div:nth-child(2n){
+.intotheVoid > .chessgame > .chessboard > .chessrow:nth-child(2n-1) > div:nth-child(2n){
     background-color: #300269;
 }
-.intotheVoid > .chessboard > .chessrow:nth-child(2n) > div:nth-child(2n){
+.intotheVoid > .chessgame > .chessboard > .chessrow:nth-child(2n) > div:nth-child(2n){
     background-color: #a1afff;
 }
-.intotheVoid > .chessboard > .chessrow:nth-child(2n-1) > div:nth-child(2n-1){
+.intotheVoid > .chessgame > .chessboard > .chessrow:nth-child(2n-1) > div:nth-child(2n-1){
     background-color: #a1afff;
 }
 
