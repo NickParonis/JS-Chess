@@ -47,14 +47,20 @@ $(document).ready(function() {
 
     $(document.body).on('input', '.whitesTimeRange', function(){
         gamestate.whitetimer.remainingTime = $(".whitesTimeRange").val()
-        $(".whitesTimeDisplay").empty();
-        $(".whitesTimeDisplay").append(gamestate.whitetimer.remainingTime);
+        $(".whiteSettings").children(".whitesTime").empty();
+        $(".whiteSettings").children(".whitesTime").append(gamestate.whitetimer.remainingTime);
     });
     $(document.body).on('input', '.blacksTimeRange', function(){
         gamestate.blacktimer.remainingTime = $(".blacksTimeRange").val()
-        $(".blacksTimeDisplay").empty()
-        $(".blacksTimeDisplay").append(gamestate.blacktimer.remainingTime);
+        $(".blackSettings").children(".blacksTime").empty()
+        $(".blackSettings").children(".blacksTime").append(gamestate.blacktimer.remainingTime);
     });
+    $(document.body).on("click", ".modalSaveButton", function(){
+        $(".whitesTimeDisplay").empty()
+        $(".whitesTimeDisplay").append(gamestate.whitetimer.remainingTime)
+        $(".blacksTimeDisplay").empty()
+        $(".blacksTimeDisplay").append(gamestate.blacktimer.remainingTime)
+    })
     function switchturnplayer(){
         switch(gamestate.turnplayer) {
             case "white":
