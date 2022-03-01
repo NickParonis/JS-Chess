@@ -23,6 +23,7 @@ $(document).ready(function() {
         activePieceType: "none",
         activePieceColor: "none"
     };
+
     // start button
     $(document.body).on('click', '.start', function(){
         //transformation from startButton to resetButton
@@ -33,9 +34,10 @@ $(document).ready(function() {
         addwhitepieces();
         startWhiteTimer = setInterval(function(){
             gamestate.whitetimer.remainingTime = gamestate.whitetimer.remainingTime - 1
-            $(".whitesTime").empty()
-            $(".whitesTime").append(gamestate.whitetimer.remainingTime);
+            $(".whitesTimeDisplay").empty()
+            $(".whitesTimeDisplay").append(gamestate.whitetimer.remainingTime);
         }, 1000);
+        $(".whitesTime").children(".red").addClass("opacity100")
     });
 
     $('#exampleModal').modal({
@@ -45,33 +47,37 @@ $(document).ready(function() {
 
     $(document.body).on('input', '.whitesTimeRange', function(){
         gamestate.whitetimer.remainingTime = $(".whitesTimeRange").val()
-        $(".whitesTime").empty();
-        $(".whitesTime").append(gamestate.whitetimer.remainingTime);
+        $(".whitesTimeDisplay").empty();
+        $(".whitesTimeDisplay").append(gamestate.whitetimer.remainingTime);
     });
     $(document.body).on('input', '.blacksTimeRange', function(){
         gamestate.blacktimer.remainingTime = $(".blacksTimeRange").val()
-        $(".blacksTime").empty()
-        $(".blacksTime").append(gamestate.blacktimer.remainingTime);
+        $(".blacksTimeDisplay").empty()
+        $(".blacksTimeDisplay").append(gamestate.blacktimer.remainingTime);
     });
     function switchturnplayer(){
         switch(gamestate.turnplayer) {
             case "white":
+                $(".whitesTime").children(".red").removeClass("opacity100")
                 clearInterval(startWhiteTimer);
                 gamestate.turnplayer = "black";
                 startBlackTimer = setInterval(function(){
                     gamestate.blacktimer.remainingTime = gamestate.blacktimer.remainingTime - 1
-                    $(".blacksTime").empty()
-                    $(".blacksTime").append(gamestate.blacktimer.remainingTime);
+                    $(".blacksTimeDisplay").empty()
+                    $(".blacksTimeDisplay").append(gamestate.blacktimer.remainingTime);
                 }, 1000);
+                $(".blacksTime").children(".red").addClass("opacity100")
             break;
             case "black":
+                $(".blacksTime").children(".red").removeClass("opacity100")
                 clearInterval(startBlackTimer);
                 gamestate.turnplayer = "white";
                 startWhiteTimer = setInterval(function(){
                     gamestate.whitetimer.remainingTime = gamestate.whitetimer.remainingTime - 1
-                    $(".whitesTime").empty()
-                    $(".whitesTime").append(gamestate.whitetimer.remainingTime);
+                    $(".whitesTimeDisplay").empty()
+                    $(".whitesTimeDisplay").append(gamestate.whitetimer.remainingTime);
                 }, 1000);
+                $(".whitesTime").children(".red").addClass("opacity100")
             break;
         }
     }
@@ -674,11 +680,11 @@ $(document).ready(function() {
         clearInterval(startWhiteTimer);
         clearInterval(startBlackTimer);
         gamestate.whitetimer.remainingTime = 900
-        $(".whitesTime").empty()
-        $(".whitesTime").append(gamestate.whitetimer.remainingTime);
+        $(".whitesTimeDisplay").empty()
+        $(".whitesTimeDisplay").append(gamestate.whitetimer.remainingTime);
         gamestate.blacktimer.remainingTime = 900
-        $(".blacksTime").empty()
-        $(".blacksTime").append(gamestate.blacktimer.remainingTime);
+        $(".blacksTimeDisplay").empty()
+        $(".blacksTimeDisplay").append(gamestate.blacktimer.remainingTime);
     });
 
 
