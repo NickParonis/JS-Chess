@@ -1,9 +1,3 @@
-
-
-current state of the game here
-
-Under construction
-
 <br />
 <div align="center">
   <p align="center">
